@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     lxd_storage_pool: str = "default"
     lxd_network: str = "lxdbr0"
     terminal_shell: str = "/bin/bash"
-    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    cors_origins: list[str] = ["*"]
 
 
 @lru_cache
