@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     app_name: str = "AetherCloud"
     database_url: str = Field(
-        default="postgresql+psycopg://aethercloud:aethercloud@localhost:5432/aethercloud"
+        default="sqlite+aiosqlite:///./ac.db"
     )
     redis_url: str = "redis://localhost:6379/0"
     secret_key: str = Field(default="change-me-before-production")
