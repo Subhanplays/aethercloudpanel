@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     access_token_minutes: int = 60 * 8
     vps_prefix: str = "AETH"
     vps_starting_id: int = 10001
-    default_admin_email: str = "admin@aethercloud.local"
+    default_admin_email: str = "admin@aethercloud.com"
     default_admin_username: str = "admin"
     default_admin_password: str = "AetherCloud@12345"
     lxd_binary: str = "lxc"

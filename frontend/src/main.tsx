@@ -52,7 +52,7 @@ function AuthPage({ onLogin }: { onLogin: () => void }) {
           <>Already have an account? <button type="button" className="link" onClick={() => setMode("login")}>Login</button></>
         )}
       </p>
-      {mode === "login" && <small className="demo-hint">Default admin &mdash; admin@aethercloud.local / AetherCloud@12345</small>}
+      {mode === "login" && <small className="demo-hint">Default admin &mdash; admin@aethercloud.com / AetherCloud@12345</small>}
     </section>
   </main>;
 }

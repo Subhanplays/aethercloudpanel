@@ -44,7 +44,8 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   });
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.detail ?? response.statusText);
+    const detail = body.detail ?? response.statusText;
+    throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
   }
   if (response.status === 204) return undefined as T;
   return response.json();

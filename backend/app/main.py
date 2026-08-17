@@ -51,8 +51,13 @@ async def startup() -> None:
             )
             await db.commit()
         existing_admin = (
-            await db.execute(select(User).where(User.email == settings.default_admin_email))
-        ).scalar_one_or_none()
+            await db.execute(
+                select(User).where(
+                    (User.email == settings.default_admin_email)
+                    | (User.username == settings.default_admin_username)
+                )
+            )
+        ).scalars().first()
         if existing_admin is None:
             db.add(
                 User(
@@ -65,6 +70,7 @@ async def startup() -> None:
                 )
             )
         else:
+            existing_admin.email = settings.default_admin_email
             existing_admin.username = settings.default_admin_username
             existing_admin.password_hash = hash_password(settings.default_admin_password)
             existing_admin.role = Role.super_admin

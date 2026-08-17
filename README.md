@@ -23,7 +23,7 @@ Required services:
 
 On first startup, AetherCloud creates a default super admin if no admin exists:
 
-- Email: `admin@aethercloud.local`
+- Email: `admin@aethercloud.com`
 - Password: `AetherCloud@12345`
 
 Override these before first startup with `DEFAULT_ADMIN_EMAIL`, `DEFAULT_ADMIN_USERNAME`, and `DEFAULT_ADMIN_PASSWORD`.
