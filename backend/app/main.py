@@ -1,7 +1,9 @@
 import asyncio
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
 
 from app.api import admin, auth, terminal, vps
@@ -26,6 +28,10 @@ app.include_router(auth.router, prefix="/api")
 app.include_router(vps.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 app.include_router(terminal.router, prefix="/api")
+
+FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+if FRONTEND_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
 
 
 @app.on_event("startup")

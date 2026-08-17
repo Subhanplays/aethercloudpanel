@@ -1,5 +1,5 @@
 export const API_URL =
-  import.meta.env.VITE_API_URL ?? `http://${window.location.hostname}:8000`;
+  import.meta.env.VITE_API_URL ?? window.location.origin;
 
 export type Vps = {
   id: number;
