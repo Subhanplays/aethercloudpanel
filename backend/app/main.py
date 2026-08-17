@@ -33,7 +33,7 @@ async def startup() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     async with SessionLocal() as db:
-        existing = (await db.execute(select(OSImage))).scalar_one_or_none()
+        existing = (await db.execute(select(OSImage))).first()
         if not existing:
             db.add_all(
                 [
