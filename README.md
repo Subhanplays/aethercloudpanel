@@ -21,6 +21,13 @@ Required services:
 - LXD initialized on the same host as the backend
 - Backend process authorized to run `lxc`
 
+On first startup, AetherCloud creates a default super admin if no admin exists:
+
+- Email: `admin@aethercloud.local`
+- Password: `AetherCloud@12345`
+
+Override these before first startup with `DEFAULT_ADMIN_EMAIL`, `DEFAULT_ADMIN_USERNAME`, and `DEFAULT_ADMIN_PASSWORD`.
+
 ## Frontend
 
 ```bash

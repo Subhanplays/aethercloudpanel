@@ -7,32 +7,52 @@ import "@xterm/xterm/css/xterm.css";
 import "./styles.css";
 import { API_URL, OSImage, ResourceSummary, Vps, api, token } from "./lib/api";
 
-function Login({ onLogin }: { onLogin: () => void }) {
+function AuthPage({ onLogin }: { onLogin: () => void }) {
+  const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError("");
+    setNotice("");
     try {
-      const data = await api<{ access_token: string }>("/api/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
-      localStorage.setItem("aether-token", data.access_token);
-      onLogin();
+      if (mode === "register") {
+        await api("/api/auth/register", { method: "POST", body: JSON.stringify({ email, username, password }) });
+        setNotice("Account created. You can now log in.");
+        setMode("login");
+      } else {
+        const data = await api<{ access_token: string }>("/api/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
+        localStorage.setItem("aether-token", data.access_token);
+        onLogin();
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : "Something went wrong");
     }
   }
   return <main className="login">
     <section className="login-panel">
       <Cloud size={36} />
       <h1>AetherCloud</h1>
-      <p>Welcome back.</p>
+      <p>{mode === "login" ? "Welcome back." : "Create your account."}</p>
       <form onSubmit={submit}>
-        <input placeholder="Email" value={email} onChange={(event) => setEmail(event.target.value)} />
-        <input placeholder="Password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+        <input placeholder="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+        {mode === "register" && <input placeholder="Username (min 3 chars)" minLength={3} value={username} onChange={(event) => setUsername(event.target.value)} />}
+        <input placeholder="Password (min 12 chars)" type="password" minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} />
         {error && <span className="error">{error}</span>}
-        <button>Login</button>
+        {notice && <span className="notice">{notice}</span>}
+        <button>{mode === "login" ? "Login" : "Register"}</button>
       </form>
+      <p className="auth-switch">
+        {mode === "login" ? (
+          <>No account yet? <button type="button" className="link" onClick={() => setMode("register")}>Create one</button></>
+        ) : (
+          <>Already have an account? <button type="button" className="link" onClick={() => setMode("login")}>Login</button></>
+        )}
+      </p>
+      {mode === "login" && <small className="demo-hint">Default admin &mdash; admin@aethercloud.local / AetherCloud@12345</small>}
     </section>
   </main>;
 }
@@ -137,7 +157,7 @@ function App() {
   const [selected, setSelected] = useState<Vps | null>(null);
   const refresh = () => api<Vps[]>("/api/vps").then((data) => { setVps(data); setSelected((current) => data.find((item) => item.vps_id === current?.vps_id) ?? data[0] ?? null); });
   useEffect(() => { if (loggedIn) refresh(); }, [loggedIn]);
-  if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
+  if (!loggedIn) return <AuthPage onLogin={() => setLoggedIn(true)} />;
   return <div className="app">
     <aside>
       <h1><Cloud /> AetherCloud</h1>

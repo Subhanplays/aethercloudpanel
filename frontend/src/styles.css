@@ -89,6 +89,34 @@ select {
   color: #fecaca;
 }
 
+.auth-switch {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #60a5fa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notice {
+  color: #86efac;
+}
+
+.demo-hint {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
 .app {
   min-height: 100vh;
   display: grid;
